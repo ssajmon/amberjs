@@ -16,8 +16,18 @@
   var src = tmp.innerHTML;
   console.log(src.slice(0, 5000));
 
+  // 上記の src には DOCTYPE 含まれていないので別途用意
+  var name     = document.doctype.name;
+  var publicId = document.doctype.publicId;
+  var systemID = document.doctype.systemId;
+  var doctype  = '<!DOCTYPE ' + name
+                 + (publicId ? ' PUBLIC "' + publicId + '"' : '')
+                 + (systemID ? ' "' + systemID + '"' : '')
+                 + '>';
+  console.log(doctype);
+
   // ソースコードを Blob オブジェクトに変換してURLを取得
-  var blob    = new Blob([src]);
+  var blob    = new Blob([doctype, '\n', src]);
   var url     = window.URL || window.webkitURL;
   var blobURL = url.createObjectURL(blob);
 
